@@ -1,0 +1,10 @@
+#
+# Tests v0.1
+#
+# Authors:
+#	Name: Amer Turcinovic Email: turcinovic@gmail.com
+#	Name: Edis Mehmedovic Email: edis_1987@hotmail.com
+#	Name: Ademir Pjanic   Email: ademir.p@gmail.com
+#   
+
+This application is used to create tests for users for various categories.
