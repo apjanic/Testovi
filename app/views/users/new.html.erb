@@ -1,5 +1,59 @@
-<h1>New user</h1>
+<div class="container">
+	<h2>Add new user</h2>
+	<div class="alert alert-info">
+		Fields marked with * are mandatory.
+  	</div>
+	<div id="">
+		<!--<form class="form-horizontal" id="frmNewUser" method="POST" action="/users/new">-->
+		<%= form_tag("/users/new", :method => "post", :class => "form-horizontal") do |f| %>
+			
+			<fieldset>
+				<div class="control-group">
+					<label class="control-label" for="txtFirstName">First Name:</label>
+					<div class="controls">
+						<%= text_field_tag("txtFirstName", session["firstName"], :class=>"input-xlarge", :maxlength => 20) %>
+					</div>
+				</div>
+				
+				<div class="control-group">
+					<label class="control-label" for="txtLastName">Last Name:</label>
+					<div class="controls">
+						<%= text_field_tag("txtLastName", session["lastName"], :class=>"input-xlarge", :maxlength => 20) %>
+					</div>
+				</div>
+										
+				<div class="control-group">
+					<label class="control-label" for="txtUsername">Username *:</label>
+					<div class="controls">
+						<%= text_field_tag("txtUsername", session["username"], :class=>"input-xlarge", :maxlength => 15) %>
+					</div>
+				</div>
+				
+				<div class="control-group">
+					<label class="control-label" for="txtPassword">Password *:</label>
+					<div class="controls">
+						<%= password_field_tag("txtPassword", "", :class=>"input-xlarge") %>
+					</div>
+				</div>
+				
+				<div class="control-group">
+					<label class="control-label" for="txtEmail">Email *:</label>
+					<div class="controls">
+						<%= text_field_tag("txtEmail", session["email"], :class=>"input-xlarge") %>
+					</div>
+				</div>
+				
+				<div class="form-actions">
+					<button type="submit" id="frmNewUser_add" class="btn btn-primary">Add</button>
+					<button type="reset" class="btn">Reset</button>
+				</div>
+			</fieldset>
+		<% end %>
+		<!--</form>-->
+	</div>
+	<%= raw(@warningMessage) %>
+	<%= raw(@infoMessage) %>
 
-<%= render 'form' %>
-
-<%= link_to 'Back', users_path %>
+</div>
+<script>
+</script>

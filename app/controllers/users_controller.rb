@@ -1,83 +1,56 @@
 class UsersController < ApplicationController
-  # GET /users
-  # GET /users.json
-  def index
-    @users = User.all
-
-    respond_to do |format|
-      format.html # index.html.erb
-      format.json { render json: @users }
-    end
-  end
-
-  # GET /users/1
-  # GET /users/1.json
-  def show
-    @user = User.find(params[:id])
-
-    respond_to do |format|
-      format.html # show.html.erb
-      format.json { render json: @user }
-    end
-  end
-
-  # GET /users/new
-  # GET /users/new.json
   def new
-    @user = User.new
-
-    respond_to do |format|
-      format.html # new.html.erb
-      format.json { render json: @user }
-    end
-  end
-
-  # GET /users/1/edit
-  def edit
-    @user = User.find(params[:id])
-  end
-
-  # POST /users
-  # POST /users.json
-  def create
-    @user = User.new(params[:user])
-
-    respond_to do |format|
-      if @user.save
-        format.html { redirect_to @user, notice: 'User was successfully created.' }
-        format.json { render json: @user, status: :created, location: @user }
+    if request.post?
+      email = params["txtEmail"]
+      username = params["txtUsername"]
+      
+      @warnings = Hash.new      
+      user = User.new
+      
+      #validate username
+      if(!user.validateUsername(username))
+        @warnings["username"] = "Please check your username. Username must be minimum four characters long and contain letters, numbers, hyphens and underscores."
       else
-        format.html { render action: "new" }
-        format.json { render json: @user.errors, status: :unprocessable_entity }
+        session[:username] = username
       end
-    end
-  end
-
-  # PUT /users/1
-  # PUT /users/1.json
-  def update
-    @user = User.find(params[:id])
-
-    respond_to do |format|
-      if @user.update_attributes(params[:user])
-        format.html { redirect_to @user, notice: 'User was successfully updated.' }
-        format.json { head :no_content }
+      
+      #validate password
+      if(params["txtPassword"] == '')
+        @warnings[:password] = "Please check your password. Password cannot be empty."
+      end
+       
+      #validate email
+      if(!user.validateEmail(email))
+        @warnings["email"] = "Please fill in valid email address!"
       else
-        format.html { render action: "edit" }
-        format.json { render json: @user.errors, status: :unprocessable_entity }
+        session[:email] = email
       end
-    end
-  end
-
-  # DELETE /users/1
-  # DELETE /users/1.json
-  def destroy
-    @user = User.find(params[:id])
-    @user.destroy
-
-    respond_to do |format|
-      format.html { redirect_to users_url }
-      format.json { head :no_content }
-    end
-  end
+      
+      #store first name and last name to session and use it later
+      session[:firstName] = params["txtFirstName"]
+      session[:lastName]  = params["txtLastName"]
+      
+      if(@warnings.keys.count > 0)
+        @warningMessage = '<div class="alert alert-error">You cannot add new user. Please check following:<br><ul>'
+        
+        @warnings.each do |key, value|
+          @warningMessage += '<li>' + value + '</li>'
+        end
+        
+        @warningMessage += '</ul></div>'
+      else
+        newUser = User.create(:username   => username,
+                              :password   => params["txtPassword"],
+                              :firstName  => params["txtFirstName"],
+                              :lastName   => params["txtLastName"],
+                              :email      => email)
+        newUser.save
+        @infoMessage = '<div class="alert alert-success">You have successfully added a new user.</div>'
+      end
+                   
+    else
+      #@status = "nije post request"
+    end 
+  end  
+    
 end
