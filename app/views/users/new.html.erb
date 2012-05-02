@@ -3,8 +3,7 @@
 	<div class="alert alert-info">
 		Fields marked with * are mandatory.
   	</div>
-	<div id="">
-		<!--<form class="form-horizontal" id="frmNewUser" method="POST" action="/users/new">-->
+	<div id="">		
 		<%= form_tag("/users/new", :method => "post", :class => "form-horizontal") do |f| %>
 			
 			<fieldset>
@@ -19,6 +18,13 @@
 					<label class="control-label" for="txtLastName">Last Name:</label>
 					<div class="controls">
 						<%= text_field_tag("txtLastName", session["lastName"], :class=>"input-xlarge", :maxlength => 20) %>
+					</div>
+				</div>
+				
+				<div class="control-group">
+					<label class="control-label" for="cboRole">Role *:</label>
+					<div class="controls">
+						<%= select_tag 'cboRole', options_for_select(@userRoles, session["userRole"]), :multiple => false, :class => "span3", :selected => '2' %>
 					</div>
 				</div>
 										
@@ -48,12 +54,10 @@
 					<button type="reset" class="btn">Reset</button>
 				</div>
 			</fieldset>
-		<% end %>
-		<!--</form>-->
+		<% end %>		
 	</div>
 	<%= raw(@warningMessage) %>
-	<%= raw(@infoMessage) %>
-
+	<%= raw(@infoMessage) %>	
 </div>
 <script>
 </script>

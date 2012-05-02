@@ -1,4 +1,8 @@
 class User < ActiveRecord::Base
+  before_create :encrypt_password
+  
+  
+  
   # Email validation function
   # => input parameters: @email
   # => return: true or false
@@ -21,5 +25,12 @@ class User < ActiveRecord::Base
         return false
       end
     end     
+  end
+  
+  # Encrypt password before save to DB
+  def encrypt_password
+    if password.present?
+      self.password = Digest::MD5.hexdigest(self.password)
+    end
   end
 end

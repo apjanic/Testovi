@@ -1,0 +1,37 @@
+
+<div class="container">
+	<div><h2>Login</h2><%= link_to("Logout", {:controller => "users", :action => "logout"})%></div>
+	<% if !session["sessionID"] %>
+		<div><%= raw(flash[:status]) %></div>
+		<div class="alert alert-info">
+			Please log in to continue.
+	  	</div>
+		<div id="">		
+			<%= form_tag("/users/login", :method => "post", :class => "form-horizontal") do |f| %>
+				
+				<fieldset>
+											
+					<div class="control-group">
+						<label class="control-label" for="txtUsername">Username *:</label>
+						<div class="controls">
+							<%= text_field_tag("txtUsername", session["username"], :class=>"input-xlarge", :maxlength => 15) %>
+						</div>
+					</div>
+					
+					<div class="control-group">
+						<label class="control-label" for="txtPassword">Password *:</label>
+						<div class="controls">
+							<%= password_field_tag("txtPassword", "", :class=>"input-xlarge") %>
+						</div>
+					</div>
+										
+					<div class="form-actions">
+						<button type="submit" id="frmNewUser_add" class="btn btn-primary">Login</button>					
+					</div>
+				</fieldset>
+			<% end %>		
+		</div>
+	<% else %>
+	<%= raw(flash[:status]) %>
+	<% end %>	
+</div>
